@@ -7,7 +7,7 @@
 #pragma once
 #ifndef NNet
 #define NNet
-#include "scanner.h"
+#include "Scanner.h"
 
 
 #endif
