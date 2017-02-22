@@ -110,13 +110,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DataSet.h" />
-    <ClInclude Include="Neuron.h" />
     <ClInclude Include="FFNNet.h" />
     <ClInclude Include="Scanner.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="FFNNet.cpp" />
     <ClCompile Include="Scanner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
