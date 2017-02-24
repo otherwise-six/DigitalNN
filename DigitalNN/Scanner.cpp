@@ -1,5 +1,5 @@
-/*Will scan in data from CSV files and create a Total Data Set to 
-* allow easy access and organization of the data items for use in a 
+/*Will scan in data from CSV files and create a Training Data Set. 
+* This allows easy access and organization of the data items for use in a 
 * neural network.
 *
 * Author @ Alex vanKooten
@@ -167,7 +167,7 @@ void scanner::setPartitionMethod(int method, double var_a, double var_b) {
 };
 
 //returns the data set created by a selected method
-totalDataSet* scanner::getTrainingDataSet() {
+trainDataSet* scanner::getTrainingDataSet() {
 	switch (partition_method) {
 		case STATIC: 
 			createStaticDataSet();

@@ -111,10 +111,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FFNNet.h" />
+    <ClInclude Include="NNTrainer.h" />
     <ClInclude Include="Scanner.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FFNNet.cpp" />
+    <ClCompile Include="NNTrainer.cpp" />
     <ClCompile Include="Scanner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

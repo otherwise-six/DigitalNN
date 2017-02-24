@@ -21,12 +21,18 @@
     <ClInclude Include="Scanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NNTrainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FFNNet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNTrainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

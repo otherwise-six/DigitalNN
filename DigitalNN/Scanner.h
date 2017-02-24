@@ -31,14 +31,14 @@ public:
 };
 
 /*this will store our classified data sets (training, validation and testing)*/
-class totalDataSet {
+class trainDataSet {
 
 public:
 	std::vector<dataSet*> training_set;
 	std::vector<dataSet*> validation_set;
 	std::vector<dataSet*> generalization_set;
 
-	totalDataSet() {
+	trainDataSet() {
 		//empty default contructor
 	};
 		
@@ -70,7 +70,7 @@ private:
 	int training_data_end_index; //line at which the training data ends
 
 	std::vector<dataSet*> data; //stores the data
-	totalDataSet current_data_set; //the set we're currently working on
+	trainDataSet current_data_set; //the set we're currently working on
 
 	//growing variables
 	double grow_step_size;		//training set will increase by % of total size
@@ -89,7 +89,7 @@ public:
 	void setPartitionMethod(int method, double var_a = -1, double var_b = -1);
 	int getNumTrainingSets();
 
-	totalDataSet* getTrainingDataSet();
+	trainDataSet* getTrainingDataSet();
 	std::vector<dataSet*>& getAllData();
 
 private:

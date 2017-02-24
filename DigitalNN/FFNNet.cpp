@@ -1,14 +1,20 @@
 /*This is the Feed Forward Neural Network (FFNN) class!
 * Every function that the FFNN does is housed and explained here.
-*
+* What I'll be doing first is a feed forward neural network based on 
+* backpropagation learning with momentum. 
+* The learning rate, momentum and number of hidden nodes need to be variable 
+* so the network performance under different conditions can be recorded.
+* The activation function will need to be toggle-able between the logistic 
+* and tanh functions.
+* The "holdout" and "cross validation" techniques will be used on testing data.
 * Author @ Alex vanKooten
 * Version: 1.1 (02.23.2017)                                                   */
 
+#include "FFNNet.h"
 #include <math.h>
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include "FFNNet.h"
 
 /*FFNN constuctor*/
 FFNNet::FFNNet(int num_in, int num_hid, int num_out) : 
@@ -47,7 +53,7 @@ FFNNet::FFNNet(int num_in, int num_hid, int num_out) :
 		}
 	}
 
-	init_weights(); //initialize the weights
+	initWeights(); //initialize the weights
 }
 
 /*FFNN destructor (basically just burn it all to the ground)*/
@@ -70,12 +76,12 @@ FFNNet::~FFNNet(){
 
 //TODO: switch to that newer one that Anna lectured!
 /*activation function (for now sigmoid)*/
-inline double FFNNet::activation_func(double af) {
+inline double FFNNet::activationFunc(double af) {
 	return 1 / (1 + exp(-af)); //sigmoid function
 }
 
 /*squash the output to either 0, 1 or -1*/
-inline int FFNNet::squash_output(double o) {
+inline int FFNNet::squashOutput(double o) {
 	if (o < 0.1) {
 		return 0;
 	}
@@ -88,7 +94,7 @@ inline int FFNNet::squash_output(double o) {
 }
 
 /*randomly initialize the neuron weights*/
-void FFNNet::init_weights() {
+void FFNNet::initWeights() {
 	double hidden_range = (1 / sqrt((double)num_inputs)); //set hidden range
 	double output_range = (1 / sqrt((double)num_hidden)); //set output range
 
@@ -108,7 +114,7 @@ void FFNNet::init_weights() {
 }
 
 /*load neuron weights*/
-bool FFNNet::load_weights(char* file_name) {
+bool FFNNet::loadWeights(char* file_name) {
 	std::fstream input_file;
 	input_file.open(file_name, std::ios::in); //open weight file
 
@@ -171,7 +177,7 @@ bool FFNNet::load_weights(char* file_name) {
 }
 
 /*save neuron weights*/
-bool FFNNet::save_weights(char* file_name) {
+bool FFNNet::saveWeights(char* file_name) {
 	std::fstream output_file;
 	output_file.open(file_name, std::ios::out); //open weight file to save into
 
@@ -203,18 +209,18 @@ bool FFNNet::save_weights(char* file_name) {
 }
 
 /*returns the result from feeding an input pattern forward through the network*/
-int* FFNNet::feed_forward_pattern(double *input_pattern) {
-	feed_forward(input_pattern);
+int* FFNNet::feedForwardPattern(double *input_pattern) {
+	feedForward(input_pattern);
 
 	int* results = new int[num_outputs]; //create a copy of the output results
 	for (int i = 0; i < num_outputs; i++) {
-		results[i] = squash_output(output_neurons[i]);
+		results[i] = squashOutput(output_neurons[i]);
 	}
 	return results;
 }
 
 /*feed forward method; does weight calc & sets neuron values*/
-void FFNNet::feed_forward(double* input_pattern) {
+void FFNNet::feedForward(double* input_pattern) {
 	for (int i = 0; i < num_inputs; i++) {
 		input_neurons[i] = input_pattern[i]; //set input neurons values
 	}
@@ -224,7 +230,7 @@ void FFNNet::feed_forward(double* input_pattern) {
 		for (int i = 0; i <= num_inputs; i++) { //calc weighted sum of input pattern (and the bias neuron)
 			hidden_neurons[j] += input_neurons[i] * input_hidden_weights[i][j];
 		}
-		hidden_neurons[j] = activation_func(hidden_neurons[j]); //set to squashed result
+		hidden_neurons[j] = activationFunc(hidden_neurons[j]); //set to squashed result
 	}
 
 	for (int k = 0; k < num_outputs; k++) { //calc output layer values (including the bias neuron)
@@ -232,15 +238,15 @@ void FFNNet::feed_forward(double* input_pattern) {
 		for (int j = 0; j <= num_hidden; j++) { //calc weighted sum of input pattern (and the bias neuron)
 			output_neurons[k] += hidden_neurons[j] * hidden_output_weights[j][k];
 		}
-		output_neurons[k] = activation_func(output_neurons[k]); //set to squashed result
+		output_neurons[k] = activationFunc(output_neurons[k]); //set to squashed result
 	}
 }
 
 /*return the mean squared error (MSE) of the FFNN on the data set*/
-double FFNNet::get_dataset_MSE(std::vector<dataSet*>& dataset) {
+double FFNNet::getDatasetMSE(std::vector<dataSet*>& dataset) {
 	double mse = 0;
 	for (int i = 0; i < (int)dataset.size(); i++) { //cycle through array of training inputs
-		feed_forward(dataset[i]->input_data);		//feed forward inputs, backprop errors
+		feedForward(dataset[i]->input_data);		//feed forward inputs, backprop errors
 		for (int k = 0; k < num_outputs; k++) { //compare outputs with target output values
 			mse += pow((output_neurons[k] - dataset[i]->target[k]), 2); //sum MSEs together
 		}
@@ -249,15 +255,15 @@ double FFNNet::get_dataset_MSE(std::vector<dataSet*>& dataset) {
 }
 
 /*returns the accuracy of the FFNN on the data set*/
-double FFNNet::get_dataset_acc(std::vector<dataSet*>& dataset) {
+double FFNNet::getDatasetAcc(std::vector<dataSet*>& dataset) {
 	double incorrect_results = 0; //keep track of incorrect results
 
 	for (int i = 0; i < (int)dataset.size(); i++) { //cycle through array of training inputs
-		feed_forward(dataset[i]->input_data); //feed forward inputs, backprop errors
+		feedForward(dataset[i]->input_data); //feed forward inputs, backprop errors
 		bool correct_result = true; //correct input pattern "flag"
 
 		for (int k = 0; k < num_outputs; k++) { //compare outputs with target output values
-			if ((squash_output(output_neurons[k])) != (dataset[i]->target[k])) {
+			if ((squashOutput(output_neurons[k])) != (dataset[i]->target[k])) {
 				correct_result = false; //if target != output, then flag = false
 			}
 		}
