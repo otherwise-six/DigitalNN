@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FFNNet.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="NNTrainer.cpp" />
     <ClCompile Include="Scanner.cpp" />
   </ItemGroup>

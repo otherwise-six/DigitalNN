@@ -4,7 +4,7 @@
 * batch learning and incorporates momentum.
 *
 * Author @ Alex vanKooten
-* Version: 0.1 (02.23.2017)                                                   */
+* Version: 1.0 (02.23.2017)                                                   */
 
 #pragma once
 #ifndef NeuralNetTrainer

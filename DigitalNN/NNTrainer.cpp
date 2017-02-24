@@ -3,7 +3,7 @@
 * batch learning and incorporates momentum.
 *
 * Author @ Alex vanKooten
-* Version: 0.1 (02.23.2017)                                                   */
+* Version: 1.2 (02.23.2017)                                                   */
 
 #include "NNTrainer.h"
 #include <iostream>
@@ -53,20 +53,20 @@ NNTrainer::NNTrainer(FFNNet *nn) :
 		for (int q = 0; q <= (neural_net->num_outputs); q++) { //init storage for output error gradients 
 			output_err_gradients[q] = 0;
 		}
-}
+};
 
 /*set training variables that aren't defaulted above*/
 void NNTrainer::setTrainingVariables(double learn_rate, double mo, bool batch) {
 	learning_rate = learn_rate;
 	momentum = mo;
 	use_batch = batch;
-}
+};
 
 /*set up training stopping conditions*/
 void NNTrainer::setStopConditions(int m_epochs, double g_acc) {
 	max_epochs = m_epochs;
 	goal_acc = g_acc;
-}
+};
 
 /*enable the training log*/
 void NNTrainer::enableLog(const char* file_name, int resolution = 1) {
@@ -84,12 +84,12 @@ void NNTrainer::enableLog(const char* file_name, int resolution = 1) {
 			last_logged_epoch = -resolution;
 		}
 	}
-}
+};
 
 /*returns the output erorr gradient*/
 inline double NNTrainer::getOutputErrGradient(double target_value, double output_value) {
 	return (output_value * ((1 - output_value) * (target_value - output_value)));
-}
+};
 
 /*returns the input error gradient*/
 double NNTrainer::getHiddenErrGradient(int target) {
@@ -98,7 +98,7 @@ double NNTrainer::getHiddenErrGradient(int target) {
 		weighted_sum += neural_net->hidden_output_weights[target][i] * output_err_gradients[i];
 	}
 	return (weighted_sum * (neural_net->hidden_neurons[target] * (1 - neural_net->hidden_neurons[target])));
-}
+};
 
 /*train the NN using gradient descent and incorporating momentum*/
 void NNTrainer::trainNNet(trainDataSet* t_set) {
@@ -145,8 +145,7 @@ void NNTrainer::trainNNet(trainDataSet* t_set) {
 	std::cout << "Number of Epochs: " << epoch << std::endl;
 	std::cout << "Validation Set Accuracy: " << validation_set_acc << std::endl;
 	std::cout << "Validation Set MSE: " << validation_set_MSE << std::endl;
-
-}
+};
 
 void NNTrainer::runSingleEpoch(std::vector<dataSet*> t_set) {
 	double num_bad_patterns = 0; //clear the incorrect patterns
@@ -176,7 +175,7 @@ void NNTrainer::runSingleEpoch(std::vector<dataSet*> t_set) {
 	//update training acc and MSE
 	training_set_acc = (100 - ((num_bad_patterns / t_set.size()) * 100));
 	training_set_MSE = (mse / (neural_net->num_outputs * t_set.size()));
-}
+};
 
 /*backprop the error through the NN to get the delta values*/
 void NNTrainer::backprop(double* goal_outputs) {
@@ -209,7 +208,7 @@ void NNTrainer::backprop(double* goal_outputs) {
 	if (use_batch) { //3. if we're using batch learning
 		updateWeights(); //update the weights right away
 	}
-}
+};
 
 /*update weights using delta values*/
 void NNTrainer::updateWeights() {
@@ -232,16 +231,14 @@ void NNTrainer::updateWeights() {
 			}
 		}
 	}
-}
+};
 
 /*print a header to console with training info*/
 void NNTrainer::printHeader() {
 	std::cout << "\nFeed-Forward Neural Net Training Initialized: \n"
-		<< "************************************************************************************\n"
+		<< "********************************************************************************\n"
 		<< "* Learning Rate: " << learning_rate << ", Momentum: " << momentum << ", Max Epochs: " << max_epochs << " *\n"
 		<< "* Input Neurons: " << neural_net->num_inputs << "Hidden Neurons: " 
 			<< neural_net->num_hidden << " Output Neurons: " << neural_net->num_outputs << " *\n"
-		<< "************************************************************************************" << "*\n";
-}
-
-
+		<< "*******************************************************************************" << "*\n";
+};

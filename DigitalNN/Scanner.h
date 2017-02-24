@@ -27,7 +27,6 @@ public:
 		delete[] input_data;
 		delete[] target;
 	}
-
 };
 
 /*this will store our classified data sets (training, validation and testing)*/

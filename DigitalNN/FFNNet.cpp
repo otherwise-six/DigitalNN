@@ -54,7 +54,7 @@ FFNNet::FFNNet(int num_in, int num_hid, int num_out) :
 	}
 
 	initWeights(); //initialize the weights
-}
+};
 
 /*FFNN destructor (basically just burn it all to the ground)*/
 FFNNet::~FFNNet(){
@@ -72,13 +72,13 @@ FFNNet::~FFNNet(){
 	}
 	delete[] input_hidden_weights;
 	delete[] hidden_output_weights;
-}
+};
 
 //TODO: switch to that newer one that Anna lectured!
 /*activation function (for now sigmoid)*/
 inline double FFNNet::activationFunc(double af) {
 	return 1 / (1 + exp(-af)); //sigmoid function
-}
+};
 
 /*squash the output to either 0, 1 or -1*/
 inline int FFNNet::squashOutput(double o) {
@@ -91,7 +91,7 @@ inline int FFNNet::squashOutput(double o) {
 	else {
 		return -1;
 	}
-}
+};
 
 /*randomly initialize the neuron weights*/
 void FFNNet::initWeights() {
@@ -111,7 +111,7 @@ void FFNNet::initWeights() {
 				* output_range * 2) - output_range;
 		}
 	}
-}
+};
 
 /*load neuron weights*/
 bool FFNNet::loadWeights(char* file_name) {
@@ -174,7 +174,7 @@ bool FFNNet::loadWeights(char* file_name) {
 		std::cout << "\n" << file_name << " was unable to be opened!\n";
 		return false;
 	}
-}
+};
 
 /*save neuron weights*/
 bool FFNNet::saveWeights(char* file_name) {
@@ -206,7 +206,7 @@ bool FFNNet::saveWeights(char* file_name) {
 		std::cout << "\n" << file_name << " was unable to be created!\n";
 		return false;
 	}
-}
+};
 
 /*returns the result from feeding an input pattern forward through the network*/
 int* FFNNet::feedForwardPattern(double *input_pattern) {
@@ -217,7 +217,7 @@ int* FFNNet::feedForwardPattern(double *input_pattern) {
 		results[i] = squashOutput(output_neurons[i]);
 	}
 	return results;
-}
+};
 
 /*feed forward method; does weight calc & sets neuron values*/
 void FFNNet::feedForward(double* input_pattern) {
@@ -240,7 +240,7 @@ void FFNNet::feedForward(double* input_pattern) {
 		}
 		output_neurons[k] = activationFunc(output_neurons[k]); //set to squashed result
 	}
-}
+};
 
 /*return the mean squared error (MSE) of the FFNN on the data set*/
 double FFNNet::getDatasetMSE(std::vector<dataSet*>& dataset) {
@@ -252,7 +252,7 @@ double FFNNet::getDatasetMSE(std::vector<dataSet*>& dataset) {
 		}
 	}
 	return (mse / (num_outputs * dataset.size())); //calc error percentage
-}
+};
 
 /*returns the accuracy of the FFNN on the data set*/
 double FFNNet::getDatasetAcc(std::vector<dataSet*>& dataset) {
@@ -275,4 +275,4 @@ double FFNNet::getDatasetAcc(std::vector<dataSet*>& dataset) {
 
 	 //calculate error and return as percentage
 	return (100 - ((incorrect_results / dataset.size()) * 100)); //calc error percentage
-}
+};

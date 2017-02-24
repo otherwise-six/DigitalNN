@@ -9,7 +9,7 @@
 * The "holdout" and "cross validation" techniques will be used on testing data.
 *
 * Author @ Alex vanKooten
-* Version: 1.0 (02.23.2017)                                                   */
+* Version: 1.1 (02.23.2017)                                                   */
 
 #ifndef NNet
 #define NNet

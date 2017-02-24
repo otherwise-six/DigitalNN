@@ -19,18 +19,18 @@ scanner::~scanner() {
 		delete data[i];
 	}
 	data.clear();
-}
+};
 
 /*load in the data from a file in csv format*/
 bool scanner::loadDataFile(const char* file_name, int load_num_inputs, int load_num_targets) {
-	//clear all previous data
-	for (int i = 0; i < (int)data.size(); i++) delete data[i];
-	data.clear();
-	current_data_set.clear(); 
+	for (int i = 0; i < (int)data.size(); i++) {
+		delete data[i]; //clear individual data
+	}
+	data.clear(); //clear data
+	current_data_set.clear();  //clear the current data
 
-	//set # of inputs and outputs
-	num_inputs = load_num_inputs;
-	num_targets = load_num_targets;
+	num_inputs = load_num_inputs; //set # of inputs
+	num_targets = load_num_targets; //set # of outputs
 
 	//open the csv data file to read it
 	std::fstream input_file;
