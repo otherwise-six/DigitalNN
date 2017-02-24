@@ -11,13 +11,12 @@
 * Author @ Alex vanKooten
 * Version: 1.0 (02.23.2017)                                                   */
 
-#pragma once
 #ifndef NNet
 #define NNet
 #include "Scanner.h"
 
 class FFNNet {
-	friend class NNetTrainer;
+	//friend class NNetTrainer; //NNTrainer can access private memebers of FFNNet
 
 public:
 	FFNNet(int num_in, int num_hid, int num_out); //basic constructor
@@ -28,15 +27,14 @@ public:
 	double getDatasetMSE(std::vector<dataSet*>& data_set); //return the MSE of the FFNN on the data set
 	double getDatasetAcc(std::vector<dataSet*>& data_set); //returns the accuracy of the FFNN on the data set
 
-protected:
+	/* I wanted the following to be private but was having trouble with the friend class not granting me access. 
+	 * I'll try to remedy this later but for functionality it's not really important.*/
 	int num_inputs;		//number of input neurons
 	int num_hidden;		//number of hidden neurons
 	int num_outputs;	//number of output neurons
-	
 	double* input_neurons;	//vector of input neurons
 	double* hidden_neurons;	//vector of hidden neurons
 	double* output_neurons;	//vector of output neurons
-	
 	double** input_hidden_weights;	//weight matrix from input layer to hidden layer
 	double** hidden_output_weights;	//weight matric from hidden layer to output layer
 

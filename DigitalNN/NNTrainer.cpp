@@ -97,7 +97,7 @@ double NNTrainer::getHiddenErrGradient(int target) {
 	for (int i = 0; i < neural_net->num_outputs; i++) {
 		weighted_sum += neural_net->hidden_output_weights[target][i] * output_err_gradients[i];
 	}
-	return (weighted_sum * (neural_net->hidden_neurons[i] * (1 - neural_net->hidden_neurons[i])));
+	return (weighted_sum * (neural_net->hidden_neurons[target] * (1 - neural_net->hidden_neurons[target])));
 }
 
 /*train the NN using gradient descent and incorporating momentum*/
@@ -170,22 +170,68 @@ void NNTrainer::runSingleEpoch(std::vector<dataSet*> t_set) {
 	}
 
 	if (use_batch) { //if we're using batch learning
-		updateWeights(); //update the weights~
+		updateWeights(); //update the weights right away
 	}
 
-	//update training accuracy and MSE
-	training_set_acc = (100 - (num_bad_patterns / t_set.size() * 100));
+	//update training acc and MSE
+	training_set_acc = (100 - ((num_bad_patterns / t_set.size()) * 100));
 	training_set_MSE = (mse / (neural_net->num_outputs * t_set.size()));
 }
 
 /*backprop the error through the NN to get the delta values*/
 void NNTrainer::backprop(double* goal_outputs) {
-	//TODO: FINISH
+	//1. change deltas between hidden layers and output layers
+	for (int o = 0; o < neural_net->num_outputs; o++) { //1.1 loop through all output neurons
+		output_err_gradients[o] = getOutputErrGradient(goal_outputs[o], neural_net->output_neurons[o]); //1.2 get output node erorr gradient
+		for (int h = 0; h <= neural_net->num_hidden; h++) { //1.3 loop through all hidden neurons (and bias neuron)
+			if (!use_batch) { //if we're incorporating momentum
+				hidden_output_delta[h][o] = (hidden_output_delta[h][o] * momentum) 
+					+ ((neural_net->hidden_neurons[h] * output_err_gradients[o]) * learning_rate); //1.4 update the hidden-to-output deltas 
+			} else { //if we're using batch learning
+				hidden_output_delta[h][o] += ((neural_net->hidden_neurons[h] * output_err_gradients[o]) * learning_rate); //1.4 (alt) sum the hidden-to-output deltas 
+			}
+		}
+	}
+
+	//2. change deltas between input layers and hidden layers
+	for (int h = 0; h < neural_net->num_outputs; h++) { //2.1 loop through all hidden neurons
+		output_err_gradients[h] = getOutputErrGradient(goal_outputs[h], neural_net->output_neurons[h]); //2.2 get hidden node erorr gradien
+		for (int i = 0; i <= neural_net->num_hidden; i++) { //2.3 loop through all input neurons (and bias neuron)
+			if (!use_batch) { //if we're incorporating momentum
+				hidden_output_delta[i][h] = (hidden_output_delta[i][h] * momentum)
+					+ ((neural_net->hidden_neurons[i] * output_err_gradients[h]) * learning_rate); //2.4 update the input-to-hidden deltas 
+			} else { //if we're using batch learning
+				hidden_output_delta[i][h] += ((neural_net->hidden_neurons[i] * output_err_gradients[h]) * learning_rate); //2.4 (alt) sum the input-to-hidden deltas 
+			}
+		}
+	}
+
+	if (use_batch) { //3. if we're using batch learning
+		updateWeights(); //update the weights right away
+	}
 }
 
 /*update weights using delta values*/
 void NNTrainer::updateWeights() {
-	//TODO: FINISH
+	//1. update the input-to-hidden layer weights
+	for (int i = 0; i <= neural_net->num_inputs; i++) {
+		for (int h = 0; h <= neural_net->num_hidden; h++) {
+			neural_net->input_hidden_weights[i][h] += input_hidden_delta[i][h]; //update weights
+			if (use_batch) { //if we're using batch learning
+				input_hidden_delta[i][h] = 0; //clear the delta (we don't need it for momentum)
+			}
+		}
+	}
+
+	//2. update the hidden-to-output layer weights
+	for (int h = 0; h <= neural_net->num_hidden; h++) {
+		for (int o = 0; h <= neural_net->num_outputs; o++) {
+			neural_net->input_hidden_weights[h][o] += input_hidden_delta[h][o]; //update weights
+			if (use_batch) { //if we're using batch learning
+				input_hidden_delta[h][o] = 0; //clear the delta (we don't need it for momentum)
+			}
+		}
+	}
 }
 
 /*print a header to console with training info*/
