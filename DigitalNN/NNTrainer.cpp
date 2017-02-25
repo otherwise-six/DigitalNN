@@ -236,9 +236,9 @@ void NNTrainer::updateWeights() {
 /*print a header to console with training info*/
 void NNTrainer::printHeader() {
 	std::cout << "\nFeed-Forward Neural Net Training Initialized: \n"
-		<< "********************************************************************************\n"
-		<< "* Learning Rate: " << learning_rate << ", Momentum: " << momentum << ", Max Epochs: " << max_epochs << " *\n"
-		<< "* Input Neurons: " << neural_net->num_inputs << "Hidden Neurons: " 
-			<< neural_net->num_hidden << " Output Neurons: " << neural_net->num_outputs << " *\n"
+		<< "********************************************************************************"
+		<< "Learning Rate: " << learning_rate << ", Momentum: " << momentum << ", Max Epochs: " << max_epochs << "\n"
+		<< "Input Neurons: " << neural_net->num_inputs << " Hidden Neurons: " 
+			<< neural_net->num_hidden << " Output Neurons: " << neural_net->num_outputs << "\n"
 		<< "*******************************************************************************" << "*\n";
 };

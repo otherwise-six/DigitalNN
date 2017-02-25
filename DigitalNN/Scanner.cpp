@@ -32,16 +32,16 @@ bool scanner::loadDataFile(const char* file_name, int load_num_inputs, int load_
 	num_inputs = load_num_inputs; //set # of inputs
 	num_targets = load_num_targets; //set # of outputs
 
-	//open the csv data file to read it
-	std::fstream input_file;
-	input_file.open(file_name, std::ios::in);
+	//open the csv data file to read 
+	std::fstream data_file;
+	data_file.open(file_name, std::ios::in);
 
-	if (input_file.is_open()) { //if 
+	if (data_file.is_open()) { //if the file opened without problems 
 		std::string line = "";
 
 		//read data while not at end of line
-		while (!input_file.eof()) {
-			getline(input_file, line);
+		while (!data_file.eof()) {
+			getline(data_file, line);
 			if (line.length() > 2) { //read the line
 				readLine(line);
 			}
@@ -51,7 +51,7 @@ bool scanner::loadDataFile(const char* file_name, int load_num_inputs, int load_
 		random_shuffle(data.begin(), data.end());
 
 		//split data set
-		training_data_end_index = (int)(0.65 * data.size());
+		training_data_end_index = (int)(0.55 * data.size());
 		int generalization_size = (int)(ceil(0.15 * data.size()));
 		int validation_size = (int)(data.size() - training_data_end_index - generalization_size);
 
@@ -68,7 +68,8 @@ bool scanner::loadDataFile(const char* file_name, int load_num_inputs, int load_
 		//show successful read status
 		std::cout << "File Name: " << file_name << ".\nRead Complete: " 
 			<< data.size() << " Input Patterns Loaded.\n";
-		input_file.close(); //close the file 
+		data_file.close(); //close the training file 
+
 		return true; //stuff worked!
 	} else { //something went wrong and the file couldn't be opened
 		std::cout << "An error occurred attempting to open: " << file_name << "\n";
@@ -110,11 +111,11 @@ void scanner::readLine(std::string &line) {
 	for (int i=0; i < num_inputs; i++) {
 		std::cout << input_pattern[i] << ",";
 	}
-	cout << "\nTARGET_OUTPUTS: ";
+	std::cout << "\nTARGET_OUTPUTS: ";
 	for (int i=0; i < num_targets; i++) {
 		std::cout << target_output[i] << " ";
 	}
-	std::cout << endl;*/
+	std::cout << std::endl;//*/
 
 	//add the read line to a data set!
 	data.push_back(new dataSet(input_pattern, target_output));
@@ -150,23 +151,20 @@ void scanner::setPartitionMethod(int method, double var_a, double var_b) {
 
 	//windowing, a set "sliding window" of training data will be used
 	else if (method == WINDOW) {
-		//window size must be smaller than all the training data
-		//and the step size must be smaller than window size
+		//window size < all the training data and step size < window size
 		if ((var_a < data.size()) && (var_b <= var_a)) {
 			partition_method = WINDOW;
-
-			//
 			window_size = (int)var_a;		//set the window size
 			window_step_size = (int)var_b;	//set the window step size
 			window_start_index = 0;			//set where the window will begin
 
-			//number of sets
+			//number of training sets
 			num_training_sets = (int)(ceil( (double)(training_data_end_index - window_size) / window_step_size ) + 1);
 		}
 	}
 };
 
-//returns the data set created by a selected method
+//returns the data set created by the selected method
 trainDataSet* scanner::getTrainingDataSet() {
 	switch (partition_method) {
 		case STATIC: 

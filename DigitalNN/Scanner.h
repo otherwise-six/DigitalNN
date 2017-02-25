@@ -71,11 +71,9 @@ private:
 	std::vector<dataSet*> data; //stores the data
 	trainDataSet current_data_set; //the set we're currently working on
 
-	//growing variables
 	double grow_step_size;		//training set will increase by % of total size
 	int grow_last_data_index;	//where the current data set stops
 
-	//window variables
 	int window_size;		//size of each window
 	int window_step_size;	//how many entries we move the window each iteration
 	int window_start_index;	//where the current window starts
@@ -84,21 +82,18 @@ public:
 	scanner() : partition_method(NONE), num_training_sets(-1) {} //default constructor
 	~scanner(); //default destructor
 
-	bool loadDataFile(const char* filename, int load_num_inputs, int load_num_targets);
-	void setPartitionMethod(int method, double var_a = -1, double var_b = -1);
-	int getNumTrainingSets();
+	bool loadDataFile(const char* file_name, int load_num_inputs, int load_num_targets); //loads in data
+	void setPartitionMethod(int method, double var_a = -1, double var_b = -1); //sets the training data partition type
+	int getNumTrainingSets(); //returns the number of training sets
 
-	trainDataSet* getTrainingDataSet();
-	std::vector<dataSet*>& getAllData();
+	trainDataSet* getTrainingDataSet();		//returns the training data set
+	std::vector<dataSet*>& getAllData();	//returns full data set
 
 private:
-		//private methds
-		void createStaticDataSet();
-		void createGrowDataSet();
-		void createWindowDataSet();
-		void readLine(std::string &line);
-
-
+		void createStaticDataSet();	//create a static data set
+		void createGrowDataSet();	//create a growing data set
+		void createWindowDataSet(); //create a window data set
+		void readLine(std::string &line); //read a line of data
 };
 
 #endif

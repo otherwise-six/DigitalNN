@@ -26,14 +26,15 @@ void main() {
 	srand((unsigned int)(time(0))); //seed our rand # generator
 
 	scanner scan; //make a scanner for our data input
-	scan.loadDataFile("letter-recognition-2.csv", 16, 3); //load data
+	scan.loadDataFile("digit_0_full.csv", 64, 10); //load data (name, # inputs, # outputs)
 	scan.setPartitionMethod(STATIC, 10); //set how data is broken up
 
-	FFNNet net(16, 10, 3); //make the NN (# inputs, # hidden, # outputs)
+	FFNNet net(64, 20, 10); //make the NN (# inputs, # hidden, # outputs)
+	net.setActivationFunc(SIGMOID); //set the type of activation function to use
 	NNTrainer trainer(&net); //make the NN Trainer
 	trainer.enableLog("log.csv", 5); //(log name, log resolution)
-	trainer.setStopConditions(150, 90); //(max # epochs, goal % acc) 
-	trainer.setTrainingVariables(0.001, 0.9, false); //(learning rate, momentum, batch learning on)
+	trainer.setStopConditions(300, 70); //(max # epochs, goal % acc) 
+	trainer.setTrainingVariables(0.01, 0.9, false); //(learning rate, momentum, batch learning on)
 
 	for (int i = 0; i < scan.getNumTrainingSets(); i++) {
 		trainer.trainNNet(scan.getTrainingDataSet()); //use data sets to train the NN
@@ -41,4 +42,6 @@ void main() {
 
 	net.saveWeights("weights.csv"); //save the final weights
 	std::cout << "\nNeural Net has been Trained!\n"; //let the user know
+	char c; 
+	std::cin >> c;
 };

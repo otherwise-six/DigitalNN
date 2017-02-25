@@ -11,9 +11,16 @@
 * Author @ Alex vanKooten
 * Version: 1.1 (02.23.2017)                                                   */
 
+#pragma once
 #ifndef NNet
 #define NNet
 #include "Scanner.h"
+
+//enum for selecting an activation functions
+enum {
+	TANH,		//use the tanh function
+	SIGMOID,	//use the sigmoid function
+};
 
 class FFNNet {
 	//friend class NNetTrainer; //NNTrainer can access private memebers of FFNNet
@@ -29,6 +36,7 @@ public:
 
 	/* I wanted the following to be private but was having trouble with the friend class not granting me access. 
 	 * I'll try to remedy this later but for functionality it's not really important.*/
+	int func_type;		//determines which activation function we'll be using
 	int num_inputs;		//number of input neurons
 	int num_hidden;		//number of hidden neurons
 	int num_outputs;	//number of output neurons
@@ -39,8 +47,9 @@ public:
 	double** hidden_output_weights;	//weight matric from hidden layer to output layer
 
 	void initWeights();	//randomly initialize the weights
+	void setActivationFunc(int type);	//sets which kind of activation function  to use
 	inline int squashOutput(double o); //squash outputs to either 0, 1 or -1
-	inline double activationFunc(double af); //apply the activation function
+	inline double activationFunc(double x, int type = 1); //apply the activation function (default sigmoid)
 	void feedForward(double* input_pattern); //does weight calc & sets neuron values
 };
 

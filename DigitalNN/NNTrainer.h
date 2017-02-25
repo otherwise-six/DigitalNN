@@ -42,7 +42,7 @@ private:
 		
 	std::fstream log_file;	//log file
 	bool log_enabled;		//flag to log training
-	int log_resolution;		//sets the level of detail of the log
+	int log_resolution;		//How often the log records data (# epochs that pass) 
 	int last_logged_epoch;	//number of the last epoch successfully logged
 
 	double training_set_acc;		//training set accuracy per epoch

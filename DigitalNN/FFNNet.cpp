@@ -74,11 +74,21 @@ FFNNet::~FFNNet(){
 	delete[] hidden_output_weights;
 };
 
-//TODO: switch to that newer one that Anna lectured!
-/*activation function (for now sigmoid)*/
-inline double FFNNet::activationFunc(double af) {
-	return 1 / (1 + exp(-af)); //sigmoid function
+//TODO: add that newer one that Anna lectured!
+/*activation functions*/
+inline double FFNNet::activationFunc(double x, int type) {
+	 if (type == TANH) { //tanh function
+		 return ((exp(2 * x) - 1) / (exp(2 * x) + 1));
+	} else { //sigmoid function (default)
+		return (1 / (1 + exp(-x))); 
+	}
 };
+
+/*activation function (for now sigmoid)*/
+void FFNNet::setActivationFunc(int type) {
+	func_type = type;
+};
+
 
 /*squash the output to either 0, 1 or -1*/
 inline int FFNNet::squashOutput(double o) {

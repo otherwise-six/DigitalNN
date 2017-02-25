@@ -1,12 +1,8 @@
-﻿Build started 2/24/2017 4:52:09 PM.
+﻿Build started 2/24/2017 9:14:40 PM.
      1>Project "C:\Users\alex\Downloads\2017_Winter\COSC4P80\DigitalNN\DigitalNN\DigitalNN.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt FFNNet.cpp Main.cpp NNTrainer.cpp Scanner.cpp
-         Scanner.cpp
-         NNTrainer.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
          Main.cpp
-         FFNNet.cpp
-         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\alex\Downloads\2017_Winter\COSC4P80\DigitalNN\Debug\DigitalNN.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG:FASTLINK /PDB:"C:\Users\alex\Downloads\2017_Winter\COSC4P80\DigitalNN\Debug\DigitalNN.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\alex\Downloads\2017_Winter\COSC4P80\DigitalNN\Debug\DigitalNN.lib" /MACHINE:X86 Debug\FFNNet.obj
          Debug\Main.obj
@@ -17,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.83
+Time Elapsed 00:00:00.66
